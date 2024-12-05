@@ -6,8 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 num_classes = 19
-model = network.modeling.deeplabv3plus_mobilenet(num_classes=num_classes, output_stride=16)
-checkpoint = torch.load("best_deeplabv3plus_mobilenet_cityscapes_os16.pth", map_location="cpu") # 모델명
+model = network.modeling.deeplabv3plus_resnet101(num_classes=num_classes, output_stride=16)
+checkpoint = torch.load("best_deeplabv3plus_resnet101_cityscapes_os16.pth", map_location="cpu")
 model.load_state_dict(checkpoint["model_state"])
 model.eval()
 
@@ -18,9 +18,10 @@ transform = transforms.Compose([
                          std=[0.229, 0.224, 0.225])
 ])
 
-image_path = "/파일경로/.jpg"
+image_path = "train/0-whIZYce23djrQRXjktvw_jpg.rf.bebfd626dfd10ebb1360da8dd39b80a5.jpg"
 image = Image.open(image_path).convert("RGB")
 input_tensor = transform(image).unsqueeze(0)
+
 with torch.no_grad():
     output = model(input_tensor)
     if isinstance(output, dict):
